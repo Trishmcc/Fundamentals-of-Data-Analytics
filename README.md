@@ -42,7 +42,7 @@ for line in resp.iter_lines():
 
 # 2021 Data
 
-# Backing up data 
+## Backing up data 
 
 1. Create a file path for the csv file
 path2021 = 'data/cao2021_csv_' + nowstr + '.csv'
@@ -63,7 +63,7 @@ with open(pathhtml, 'w') as f:
 
 Create a file path for the original data. The module datetime from the standard library is imported to allow you to efficently work with dates and times in Python. It also gives a different file name each time so it wont overwrite the original file.[8] strftime() turns dates into strings. Save the output in a variablle called now. The order of year/month/day is used as in Windows Explorer/Data alphabetical order corresponds to datetime order.
 
-# Regular Expression
+## Regular Expression
 
 A regular expression is needed to define a pattern in the text. Regular Expression comes as default with Python. A regular expression is a sequence of characters that specifies a search pattern.[2]
 To match a whole line (whole string not partial string) with a regular expression use[3]
@@ -86,7 +86,7 @@ To include the * you need to include \* and to include everythin without an aste
 
 (\*)?
 
-# Accents: Unicode and special characters
+## Accents: Unicode and special characters
 To get rid of Fadas, you need to decode the unicode behind the scence. 
 
 ASCII was before unicode. It only used 7 bits out of 1 byte (8 bits) There are no accents in the ASCII table.
@@ -103,11 +103,11 @@ UTF 8 represents code points/integers in binary
 
 Hexamals turn into binary easily.
 
-# Dashes
+## Dashes
 
 \x96 is not being decoded correctly as an unside down question mark appears. Although the web browser states that the character encoding is ISO - 8859-1, it is not working correctly as an unside down question mark appears in places. Windows created cp1252 code points which have extra code points 128-159 (0x80-0x9F)[8] This fixes the problem. Its now in a unicode byte. 
 
-# Errors fixed
+## Errors fixed
 
 It will loop through iterate lines and decode the line and if it matches the lines from the html, the csv version will be returned.
 
@@ -115,11 +115,34 @@ Two regular expression are used in the if statement. The one below is used to re
 
 linesplit = [course_code, course_title, course_points[0], course_points[1]]
            
-f.write(','.join(linesplit) + '\n')
+```f.write(','.join(linesplit) + '\n')```
 
 # 2020 Data
 
+## Data Cleaning
 
+1. The 2020 data was in the format of an Excel document. The Excel file needed to be downloaded and the Excel spreadsheet parsed. IN the function signature there is an option skiprows=10. This parameter can be passed in to skip the first 10 rows of the Excel spredsheet.[11] Now we can see all the column names in the dataframe.
+
+``` df2020 = pd.read_excel(url2020, skiprows=10) ```
+
+2. Like for the 2021 data the orignal html file needs to be saved by opening the path with write permissions
+with open(pathhtml, 'w') as f:
+    f.write(resp.text)
+
+3. Do a spot check to make sure the data has been read in correctly.
+
+Check the data is correct in a particular row. Indexes need to be considered, ie, Excel row 1 is indexed 1 whereas Python row 1 is indexed as 0.[12] iloc retrieves the row locations. So row 753 and the last row of the dataframe are checked to confirm data has read correctly.
+
+``` df2020.iloc[753] ```
+
+df2020.iloc[-1]
+
+From the 2021 file, copy the string for the path The now time date doesnt need to be regenerated (Before the date time package was used, to get the current date and time and formatted them as a stringthen using strftime and created a pathe for the 2021 data ) Save original data [13]
+
+``` pathxlsx = 'data/cao2020_' + nowstr + '.xlsx' ```
+``` urlrq.urlretrieve(url2020, pathxlsx) ```
+
+Its good practice to save original file to data folder. Cretaed a timestamp to save as so each time you run it you redownload the CAo page and its backed up everytime so you have a history of all your analysis
 
 # Troubleshooting:
 
@@ -177,6 +200,8 @@ Troubeshooting:
 8. http://www.i18nqa.com/debug/table-iso8859-1-vs-windows-1252.html
 9. https://docs.python.org/3/library/datetime.html
 10.https://docs.python.org/3/library/re.html?highlight=split#re.split
-
+11.https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html
+12.https://www.marsja.se/how-to-use-iloc-and-loc-for-indexing-and-slicing-pandas-dataframes/
+13.https://stackoverflow.com/questions/19602931/basic-http-file-downloading-and-saving-to-disk-in-python
 
 https://pandas.pydata.org/about/index.html
