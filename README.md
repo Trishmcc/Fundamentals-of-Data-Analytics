@@ -30,13 +30,11 @@ This overview is located in pyplot.ipynb
 
 ## How to load CAO points information from the CAO website into a pandas data frame
 
-requests - import requests as rq
-regular expression - import re
-
-To begin this project, I needed to Google CAO points to view a webpage to view all the CAO points. The data was examined. There are 4 columns and 4 titles and each row has a course code. Python interacts with any html webpage by givng it the url. All webpages are text files. Chrome recognises html tags. HTML is semi-structured which means that you can write incorrect code and it will still run, so when Python reads the url it will have errors, therefore a python html parser is required. The easiest way to get the HTML webpage into a python data structure is to use a pandas dataframe.
+To begin this project, Google was used to locate data for 2019, 2020 and 2021 CAO points.  After the data was examined it was identified that there are 4 columns and 4 titles and each row has a course code. Python interacts with any html webpage by givng it the url. All webpages are text files. Chrome recognises html tags. HTML is semi-structured which means that you can write incorrect code and it will still run, so when Python reads the url it will have errors, therefore a python html parser is required. The easiest way to get the HTML webpage into a python data structure is to use a pandas dataframe.
 
 The package called requests (rq) which is convenient for making http requests comes with the Anaconda package. Its method is resp = rq.get(url) which allows you to get the content from the url.
-iter_lines() is used to loop through the lines of the file [1] line is the name of the variable in the loop. It will loop or iterate through each line and if the regular expression matches the whole line, then a dd 1 line to to the number of lines we have matched. Pick out the relevant parts of the line , for example, substitute and return the first group\1 followed by the second group \2 and so forth.
+
+iter_lines() is used to loop through the lines of the file [1] line is the name of the variable in the loop. It will loop or iterate through each line and if the regular expression matches the whole line, then it will add 1 line to to the number of lines that have matched. It picks out the relevant parts of the line , for example, substitute and return the first group\1 followed by the second group \2 and so forth.
 
 for line in resp.iter_lines():
 
@@ -44,50 +42,49 @@ for line in resp.iter_lines():
 
 ## Backing up data 
 
-1. Create a file path for the csv file
-path2021 = 'data/cao2021_csv_' + nowstr + '.csv'
+To back up data, a file path needs to be created for the csv file. 
 
-2. The server was using the wrong encoding
+```path2021 = 'data/cao2021_csv_' + nowstr + '.csv'```
 
-Reponse.text means that the request library takes the response and turns it into some text using the coding standard that we had. The encoding is correct, however, the server is sending back the wrong encoding. The request library tries to figure out the encoding from the data that it receives, ie resp._encoding which is ISO-8859-1  so this needs to be changed. 
+The server was using the wrong encoding. To fix this problem a variable was created called original coding, and the reponse encoding was changed from ISO-8859-1 to cp1252
 
-To fix this problem a variable was created called original coding, and the reponse encoding was changed from ISO-8859-1 to cp1252
+Reponse.text means that the request library takes the response and turns it into some text using the coding standard that was used. The encoding is correct, however, the server is sending back the wrong encoding. The request library tries to figure out the encoding from the data that it receives, ie resp._encoding which is ISO-8859-1  so this needs to be changed. 
 
-original_encoding = resp.encoding
+```original_encoding = resp.encoding```
+```resp.encoding = 'cp1252'```
 
-resp.encoding = 'cp1252'
+The orignal html file needed to be saved by opening the path with write permissions
 
-3. Save the orignal html file by opening the path with write permissions
-with open(pathhtml, 'w') as f:
-    f.write(resp.text)
+```with open(pathhtml, 'w') as f:```
+    ```f.write(resp.text)```
 
-Create a file path for the original data. The module datetime from the standard library is imported to allow you to efficently work with dates and times in Python. It also gives a different file name each time so it wont overwrite the original file.[8] strftime() turns dates into strings. Save the output in a variablle called now. The order of year/month/day is used as in Windows Explorer/Data alphabetical order corresponds to datetime order.
+A file path needed to be created for the original data. The module datetime from the standard library is imported to efficently work with dates and times in Python. It also gives a different file name each time so it wont overwrite the original file.[8] strftime() turns dates into strings. The output was saved in a variable called now. The order of year/month/day is used as in (Windows Explorer/Data) alphabetical order corresponds to datetime order.
 
 ## Regular Expression
 
 A regular expression is needed to define a pattern in the text. Regular Expression comes as default with Python. A regular expression is a sequence of characters that specifies a search pattern.[2]
 To match a whole line (whole string not partial string) with a regular expression use[3]
 
-if re.fullmatch(). 
+```if re.fullmatch()``` 
 
-Each time you run this regular expression it calls everything and recomplies to do the matching everytime. To be more efficient, the regular expression should be compiled so it doesnt have to keep re-running so re_course is used to reuse the precomplield regular expression.[4] The complier builds a function in memeory that recognises this pattern. The brackets mean to group something together. The r means raw and is placed in front of the string so no characters like back slashes, for example \n will be evaluated by Python. [5] It will read it as a character not a command. 
+Each time a regular expression is run, it calls everything and recomplies to do the matching everytime. To be more efficient, the regular expression should be compiled so it doesnt have to keep re-running so re_course is used to reuse the precomplield regular expression.[4] The complier builds a function in memory that recognises this pattern. The brackets mean to group something together. The r means raw and is placed in front of the string so no characters like back slashes, for example \n will be evaluated by Python. [5] It will read it as a character not a command. 
 
-re_course = re.compile(r'([A-Z]{2}[0-9]{3})(.*)')
+```re_course = re.compile(r'([A-Z]{2}[0-9]{3})(.*)')```
 
 
-[A-Z] This allows you to find any capital letter from A-Z. If you want to match two uppercase letters use {2} after it. Curly braces are quanitifiers. To match any digits use [0-9] If you want to match 3 numbers in the range of 0-9 use {3} Use the space bar to create two blank spaces as no quantifier is needed for this. The .* was used to match any character any number of times and spaces too until the next number. A space and a  wild card at the end matches zero or more spaces at the end.
+[A-Z] This locates any capital letter from A-Z. To match two uppercase letters {2}is used after it. Curly braces are quanitifiers. To match any digits use [0-9] If three numbers are to be matched in the range of 0-9 use {3} Use the space bar to create two blank spaces as no quantifier is needed for this. The .* was used to match any character any number of times and spaces too until the next number. A space and a wild card at the end matches zero or more spaces at the end.
 
-if re_course.fullmatch('[A-Z]{2}[0-9]{3} .*[0-9]{3} *, line.decode('utf-8'))
+```if re_course.fullmatch('[A-Z]{2}[0-9]{3} .*[0-9]{3} *, line.decode('utf-8'))```
 
 An error occurs: Cannot use a string pattern on a bytes like object. To fix this decode('utf-8') [6] 
 
 Some lines match the regular expression and others do not as some have extra characters like * etc
-To include the * you need to include \* and to include everythin without an asterix put \* in brackets (the \ says not to treat the * as a quantifier) followed by ? (this is the quantifier 0 or 1 of)
+To include the * a backslash needed to be included \* To include everything without an asterix an \* needed to be put in brackets (the \ says not to treat the * as a quantifier) followed by ? (this is the quantifier 0 or 1 of)
 
-(\*)?
+```(\*)?```
 
 ## Accents: Unicode and special characters
-To get rid of Fadas, you need to decode the unicode behind the scence. 
+To get rid of Fadas, the unicode behind the scence needed to be decoded. 
 
 ASCII was before unicode. It only used 7 bits out of 1 byte (8 bits) There are no accents in the ASCII table.
 
@@ -99,9 +96,7 @@ q        Q         113         01110001
 
 The number behind the character, in this example 113, is called the code point. Binary representation of the code point 113 is 01110001 [7]
 
-UTF 8 represents code points/integers in binary
-
-Hexamals turn into binary easily.
+UTF 8 represents code points/integers in binary. Hexamals turn into binary easily.
 
 ## Dashes
 
@@ -111,9 +106,9 @@ Hexamals turn into binary easily.
 
 It will loop through iterate lines and decode the line and if it matches the lines from the html, the csv version will be returned.
 
-Two regular expression are used in the if statement. The one below is used to replace the lines with a csv format. The dline.split function is used to split spaces between different fields/columns.[10] Going to split on two or more space so use a 'space' and a '+'. The blank lines in between each row wont be effected as it doesnt match the original regular expression. Each part of the row becomes its own mini string. Now you dont need to use lots of groupings from the original regular expression, eg ([A-Z]{2}[0-9]{3}) Not a good idea to split on one space as there is one space allocated betwen each word in for example a title 'Computer Science' You can rejoin the mini strings so that they only have a comma between them
+Two regular expression are used in the if statement. The one below is used to replace the lines with a csv format. The dline.split function is used to split spaces between different fields/columns.[10] Going to split on two or more space so use a 'space' and a '+'. The blank lines in between each row wont be effected as it doesnt match the original regular expression. Each part of the row becomes its own mini string. Lots of groupings from the original regular expression are not required, eg ([A-Z]{2}[0-9]{3}) It is not a good idea to split on one space as there is one space allocated betwen each word in for example a title 'Computer Science' You can rejoin the mini strings so that they only have a comma between them.
 
-linesplit = [course_code, course_title, course_points[0], course_points[1]]
+```linesplit = [course_code, course_title, course_points[0], course_points[1]]```
            
 ```f.write(','.join(linesplit) + '\n')```
 
