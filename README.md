@@ -116,29 +116,29 @@ Two regular expression are used in the if statement. The one below is used to re
 
 ## Data Cleaning
 
-1.The 2020 data was in the format of an Excel document. The Excel file needed to be downloaded and the Excel spreadsheet parsed. IN the function signature there is an option skiprows=10. This parameter can be passed in to skip the first 10 rows of the Excel spredsheet.[11] Now we can see all the column names in the dataframe.
+1.The 2020 data was in the format of an Excel document. The Excel file was downloaded and the Excel spreadsheet parsed. In the function signature there is an option skiprows=10. This parameter can be passed in to skip the first 10 rows of the Excel spredsheet.[11] All the column names in the dataframe are now visbile.
 
 ``` df2020 = pd.read_excel(url2020, skiprows=10) ```
 
-2.Like for the 2021 data the orignal html file needs to be saved by opening the path with write permissions
+2.Like for the 2021 data the orignal html file was saved by opening the path with write permissions
 
 ```with open(pathhtml, 'w') as f:``
     f.write(resp.text)```
 
-Do a spot check to make sure the data has been read in correctly.
+A spot check was completed to make sure the data has been read in correctly.
 
-Check the data is correct in a particular row. Indexes need to be considered, ie, Excel row 1 is indexed 1 whereas Python row 1 is indexed as 0.[12] iloc retrieves the row locations. So row 753 and the last row of the dataframe are checked to confirm data has read correctly.
+Code was used to check the data is correct in a particular row. Indexes need to be considered, ie, Excel row 1 is indexed 1 whereas Python row 1 is indexed as 0.[12] iloc retrieves the row locations. So row 753 and the last row of the dataframe are checked to confirm data has read correctly.
 
 ``` df2020.iloc[753] ```
 
-df2020.iloc[-1]
+```df2020.iloc[-1]```
 
-From the 2021 file, copy the string for the path The now time date doesnt need to be regenerated (Before the date time package was used, to get the current date and time and formatted them as a stringthen using strftime and created a pathe for the 2021 data ) Save original data [13]
+From the 2021 file, the string for the path was copied. The now time date doesnt need to be regenerated (Before the date time package was used, to get the current date and time. format them as a string, then use strftime creating a path for the 2021 data ) The original data was saved [13]
 
 ``` pathxlsx = 'data/cao2020_' + nowstr + '.xlsx' ```
 ``` urlrq.urlretrieve(url2020, pathxlsx) ```
 
-Its good practice to save original file to data folder. Cretaed a timestamp to save as so each time you run it you redownload the CAo page and its backed up everytime so you have a history of all your analysis
+Its good practice to save original file to a data folder. A timestamp was created so each time it is ran, it redownloads the CAO page and its backed up everytime so there is a  history of all the analysis performed.
 
 ## 2019 – PDF DATA  
 
