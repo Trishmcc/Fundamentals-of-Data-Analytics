@@ -165,9 +165,9 @@ notna allowed to delete empty cells only and include everything else [19]
 ```df2019 = df2019[df2019['Course Code'].notna()]```
 ```coursecode_and_names```
 
-Now, that all CAO points have been imported and the data cleaned for each year In order to clean the data, we dropped some courses that dont exist in other years
+Now, that all CAO points have been imported and the data cleaned for each year, the columns were renamed for all three years. The data is then joined using the concat function in order to get meaning from the data. All duplicated data is removed too.
 
-IN this repository....
+Courses that rose in points every year were then identified, ie each year the points were increased. Courses that decreased in points were also identified. Seven main colleges were seperated from the 'all courses' dataframe. A histogram graph was drawn for courses in Cork. It identified the required CAO points for courses in Cork. The maximum points required in each college are identified. Minimum points required in each college are then identified. A function was created that takes any course title and a given amount of points,to return courses that a student can select based on their exact points that they received. 
 
 
 # Troubleshooting:
@@ -177,42 +177,6 @@ IN this repository....
 2. Accents - To get rid of Fadas, you need to decode the unicode behind the scence. To do this, go to CAO website/rigt click/inspect/Network/Refresh. You      should see 2 http requests. Click on l8.php/Headers/Response headers/char set is iso-8859-1
 
 3. To fix the dash problem - Windows created cp1252 code points which have extra code points 128-159 (0x80-0x9F)[8]  iso-8859-1 dont have these code points to decode the byte -.
-
-
-
-
-
-
-
-The CAO Points are downloaded as a csv format.
-
-The Pandas Library is imported.
-
-The Pandas python toolkik is an open source library that is used for data analysis. It makes working with CSV files simplier and more effective as it can read and write data from different formats, i.e CSV (Common Seperated Values) which is the format of the CAO Points used for this analysis [?] The dataframe object is also useful for groupimg which will be demonstated in this project.
-print(df) clarifies that df is the object name that contains the csv file
-
-Data Screening
-
-To confirm the file has been read correctly and identify information about the data:
-print(df) To confirm that the csv file has been read correctly. It also identifies all column names and the number of rows and columns
-
-Code
-import pandas as pd
-
-df2021 = pd.read_csv(path2021, encoding='cp1252')
-
-print(df2021)
-
-
-Troubeshooting:
-
-## Detailed comparison of CAO points in 2019, 2020 and 2021 using the functionality in Python
-
-## Three plots used from matplotlib.pyplot are 1.   2.   3.
-
-## Other visualisations used are 
-
-
 
 ## References
 
@@ -235,5 +199,4 @@ Troubeshooting:
 17. https://pandas.pydata.org/docs/reference/api/pandas.Series.astype.html
 18. https://stackoverflow.com/questions/33282119/pandas-filter-dataframe-by-another-dataframe-by-row-elements/33282617
 19. https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.notna.html
-
-https://pandas.pydata.org/about/index.html
+20. https://pandas.pydata.org/about/index.html
