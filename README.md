@@ -148,25 +148,24 @@ Its good practice to save original file to a data folder. A timestamp was create
 
 The pdf was opened in a word document and saved as a .docx and regular expressions were used to extract the data. 
 
+Each course code was mapped to each college name. CK is for example Cork
 
-Mapping each course code to each college name. CK is for example Cork
+isnull was used to check course code to see if its empty, empty means that this cell belongs to the college name [16]
 
-isnull  - checking course code to see if its empty, empty means that this cell belongs to the college name   [16]
-
-astype  -  to make them strings                            [17]
+astype was used to make them strings [17]
 
 the zip joins the two dataframes [18]
 
-notna     we are deleteing empty cells only                             [19]
+notna allowed to delete empty cells only and include everything else [19]
 
 
-```college_names = pd.DataFrame(df2019[df2019['Course Code'].isnull()]['INSTITUTION and COURSE'].astype(str))
-course_codes = pd.DataFrame(df2019['Course Code'].astype(str).str[:2].unique().astype(str)[1:])
-coursecode_and_names = list(zip(course_codes.values, college_names.values))
-df2019 = df2019[df2019['Course Code'].notna()]
-coursecode_and_names```
+```college_names = pd.DataFrame(df2019[df2019['Course Code'].isnull()]['INSTITUTION and COURSE'].astype(str))```
+```course_codes = pd.DataFrame(df2019['Course Code'].astype(str).str[:2].unique().astype(str)[1:])```
+```coursecode_and_names = list(zip(course_codes.values, college_names.values))```
+```df2019 = df2019[df2019['Course Code'].notna()]```
+```coursecode_and_names```
 
-synopsis of 2019 points - In order to clean the data, we dropped some courses that dont exist in other years
+Now, that all CAO points have been imported and the data cleaned for each year In order to clean the data, we dropped some courses that dont exist in other years
 
 IN this repository....
 
