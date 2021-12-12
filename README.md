@@ -49,7 +49,7 @@ path2021 = 'data/cao2021_csv_' + nowstr + '.csv'
 
 2. The server was using the wrong encoding
 
-Reponse.text means that the request library takes the response and turns it into some text using the coding standard that we had. The encoding is correct, however, the server is sending back the wrong encoding. The request library tryies to figure out the encoding from the data that it receives, ie resp._encoding which is ISO-8859-1  so this needs to be changed. 
+Reponse.text means that the request library takes the response and turns it into some text using the coding standard that we had. The encoding is correct, however, the server is sending back the wrong encoding. The request library tries to figure out the encoding from the data that it receives, ie resp._encoding which is ISO-8859-1  so this needs to be changed. 
 
 To fix this problem a variable was created called original coding, and the reponse encoding was changed from ISO-8859-1 to cp1252
 
@@ -121,15 +121,16 @@ linesplit = [course_code, course_title, course_points[0], course_points[1]]
 
 ## Data Cleaning
 
-1. The 2020 data was in the format of an Excel document. The Excel file needed to be downloaded and the Excel spreadsheet parsed. IN the function signature there is an option skiprows=10. This parameter can be passed in to skip the first 10 rows of the Excel spredsheet.[11] Now we can see all the column names in the dataframe.
+1.The 2020 data was in the format of an Excel document. The Excel file needed to be downloaded and the Excel spreadsheet parsed. IN the function signature there is an option skiprows=10. This parameter can be passed in to skip the first 10 rows of the Excel spredsheet.[11] Now we can see all the column names in the dataframe.
 
 ``` df2020 = pd.read_excel(url2020, skiprows=10) ```
 
-2. Like for the 2021 data the orignal html file needs to be saved by opening the path with write permissions
-with open(pathhtml, 'w') as f:
-    f.write(resp.text)
+2.Like for the 2021 data the orignal html file needs to be saved by opening the path with write permissions
 
-3. Do a spot check to make sure the data has been read in correctly.
+```with open(pathhtml, 'w') as f:``
+    f.write(resp.text)```
+
+Do a spot check to make sure the data has been read in correctly.
 
 Check the data is correct in a particular row. Indexes need to be considered, ie, Excel row 1 is indexed 1 whereas Python row 1 is indexed as 0.[12] iloc retrieves the row locations. So row 753 and the last row of the dataframe are checked to confirm data has read correctly.
 
@@ -143,6 +144,32 @@ From the 2021 file, copy the string for the path The now time date doesnt need t
 ``` urlrq.urlretrieve(url2020, pathxlsx) ```
 
 Its good practice to save original file to data folder. Cretaed a timestamp to save as so each time you run it you redownload the CAo page and its backed up everytime so you have a history of all your analysis
+
+## 2019 – PDF DATA  
+
+2021 and 2020 data was downloaded from the original web server and were parsed through Python, ie to extract data and to get it into a reasonable format, which helped with reproducibility, that is to back up the original data. However,PDFs can be difficult to work with so tabula was imported to help scrap the data from the pdf using Python.[14] Java is required and the path for tabula needs to be set too. The pdf needs to be read into a list in the DataFrame, dfs = tabula.read_pdf(path, pages='all')[15]
+
+```tabula.convert_into("http://www2.cao.ie/points/lvl8_19.pdf", path, output_format="csv", pages='all')```
+
+The pdf was opened in a word document and saved as a .docx and regular expressions were used to extract the data. 
+
+isnull     What does below code mean [16]
+
+astype                               [17]
+
+filter dataframe by another dataframe by row elements [18]
+
+notna                                  [19]
+
+
+```df2 = pd.DataFrame(df2019[df2019['Course Code'].isnull()]['INSTITUTION and COURSE'].astype(str))
+df1 = pd.DataFrame(df2019['Course Code'].astype(str).str[:2].unique().astype(str)[1:])
+coursecode_and_names = list(zip(df1.values, df2.values))
+df2019 = df2019[df2019['Course Code'].notna()]
+coursecode_and_names```
+
+
+
 
 # Troubleshooting:
 
@@ -190,18 +217,24 @@ Troubeshooting:
 
 ## References
 
-1. https://stackoverflow.com/questions/16870648/python-read-website-data-line-by-line-when-available
-2. https://en.wikipedia.org/wiki/Regular_expression
-3. https://docs.python.org/3/library/re.html?highlight=match#re.match
-4. https://docs.python.org/3/library/re.html
-5. https://stackoverflow.com/questions/33729045/what-does-an-r-represent-before-a-string-in-python
-6. https://stackoverflow.com/questions/31019854/typeerror-cant-use-a-string-pattern-on-a-bytes-like-object-in-re-findall
-7. https://www.intel.com/content/dam/www/program/education/us/en/documents/the-journery-inside/digital/tji-digital-info-handout4.pdf
-8. http://www.i18nqa.com/debug/table-iso8859-1-vs-windows-1252.html
-9. https://docs.python.org/3/library/datetime.html
-10.https://docs.python.org/3/library/re.html?highlight=split#re.split
-11.https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html
-12.https://www.marsja.se/how-to-use-iloc-and-loc-for-indexing-and-slicing-pandas-dataframes/
-13.https://stackoverflow.com/questions/19602931/basic-http-file-downloading-and-saving-to-disk-in-python
+1.  https://stackoverflow.com/questions/16870648/python-read-website-data-line-by-line-when-available
+2.  https://en.wikipedia.org/wiki/Regular_expression
+3.  https://docs.python.org/3/library/re.html?highlight=match#re.match
+4.  https://docs.python.org/3/library/re.html
+5.  https://stackoverflow.com/questions/33729045/what-does-an-r-represent-before-a-string-in-python
+6.  https://stackoverflow.com/questions/31019854/typeerror-cant-use-a-string-pattern-on-a-bytes-like-object-in-re-findall
+7.  https://www.intel.com/content/dam/www/program/education/us/en/documents/the-journery-inside/digital/tji-digital-info-handout4.pdf
+8.  http://www.i18nqa.com/debug/table-iso8859-1-vs-windows-1252.html
+9.  https://docs.python.org/3/library/datetime.html
+10. https://docs.python.org/3/library/re.html?highlight=split#re.split
+11. https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html
+12. https://www.marsja.se/how-to-use-iloc-and-loc-for-indexing-and-slicing-pandas-dataframes/
+13. https://stackoverflow.com/questions/19602931/basic-http-file-downloading-and-saving-to-disk-in-python
+14. https://pypi.org/project/tabula-py/
+15. https://tabula-py.readthedocs.io/en/latest/tabula.html
+16. https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.isnull.html
+17. https://pandas.pydata.org/docs/reference/api/pandas.Series.astype.html
+18. https://stackoverflow.com/questions/33282119/pandas-filter-dataframe-by-another-dataframe-by-row-elements/33282617
+19. https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.notna.html
 
 https://pandas.pydata.org/about/index.html
