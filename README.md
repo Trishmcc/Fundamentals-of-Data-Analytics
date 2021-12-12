@@ -26,16 +26,16 @@ This respository contains two Jupyter notebooks.
 
 ## Overview of the matplotlib.pyplot Python package 
 
-This overview is located in pyplot.ipyn
+This overview is located in pyplot.ipynb
 
 ## How to load CAO points information from the CAO website into a pandas data frame
 
 requests - import requests as rq
 regular expression - import re
 
-To begin this project, I needed to Google CAO points to view a webpage to view all the CAO points. The data was examined. There are 4 columns and 4 titles and each row has a course code. Python interacts with any html webpage by givng it the url. All webpages are text files. Chrome recognises html tags. HTML is semi-structured which means that you can write incorrect code and it will still run, so when Python reads the url it will have errors, therefore a python html parser is required. The easiest way to get the HTML webpage into a python data structure is to use a pandas dataframe!!!!!!!!!!!!!!???????????
+To begin this project, I needed to Google CAO points to view a webpage to view all the CAO points. The data was examined. There are 4 columns and 4 titles and each row has a course code. Python interacts with any html webpage by givng it the url. All webpages are text files. Chrome recognises html tags. HTML is semi-structured which means that you can write incorrect code and it will still run, so when Python reads the url it will have errors, therefore a python html parser is required. The easiest way to get the HTML webpage into a python data structure is to use a pandas dataframe.
 
-The package called requests (rq) which is convenient for making http requests comes with the Anaconda package. Its method is resp = rq.get(url) which allows you to get the url from the browser. Is this a parser!!!!!!!??????????
+The package called requests (rq) which is convenient for making http requests comes with the Anaconda package. Its method is resp = rq.get(url) which allows you to get the content from the url.
 iter_lines() is used to loop through the lines of the file [1] line is the name of the variable in the loop. It will loop or iterate through each line and if the regular expression matches the whole line, then a dd 1 line to to the number of lines we have matched. Pick out the relevant parts of the line , for example, substitute and return the first group\1 followed by the second group \2 and so forth.
 
 for line in resp.iter_lines():
@@ -153,22 +153,27 @@ Its good practice to save original file to data folder. Cretaed a timestamp to s
 
 The pdf was opened in a word document and saved as a .docx and regular expressions were used to extract the data. 
 
-isnull     What does below code mean [16]
 
-astype                               [17]
+Mapping each course code to each college name. CK is for example Cork
 
-filter dataframe by another dataframe by row elements [18]
+isnull  - checking course code to see if its empty, empty means that this cell belongs to the college name   [16]
 
-notna                                  [19]
+astype  -  to make them strings                            [17]
+
+the zip joins the two dataframes [18]
+
+notna     we are deleteing empty cells only                             [19]
 
 
-```df2 = pd.DataFrame(df2019[df2019['Course Code'].isnull()]['INSTITUTION and COURSE'].astype(str))
-df1 = pd.DataFrame(df2019['Course Code'].astype(str).str[:2].unique().astype(str)[1:])
-coursecode_and_names = list(zip(df1.values, df2.values))
+```college_names = pd.DataFrame(df2019[df2019['Course Code'].isnull()]['INSTITUTION and COURSE'].astype(str))
+course_codes = pd.DataFrame(df2019['Course Code'].astype(str).str[:2].unique().astype(str)[1:])
+coursecode_and_names = list(zip(course_codes.values, college_names.values))
 df2019 = df2019[df2019['Course Code'].notna()]
 coursecode_and_names```
 
+synopsis of 2019 points - In order to clean the data, we dropped some courses that dont exist in other years
 
+IN this repository....
 
 
 # Troubleshooting:
