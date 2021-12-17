@@ -176,7 +176,7 @@ In conclusion, insights and analyses are only as good as the data someone works 
 
 In the above exercise, CAO data for the years 2019, 2020 and 2021 were used to demonstrate how to load different types of data formats into a pandas dataframe. Data was in the form of urls, Excel documents and pdfs. Once the data was successfully loaded into the dataframe it then needed to be examined and cleaned before analysis could begin. Loading and cleaning the data proved quite challenging. However, data cleansing is imperative if correct analysis is to be performed and meaningful graphs produced. 
 
-# Troubleshooting:
+## Troubleshooting:
 
 1. Cannot use a string pattern on a bytes like object. To fix this use decode('utf-8') [6] 
 
